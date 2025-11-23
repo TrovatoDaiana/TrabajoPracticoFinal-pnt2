@@ -1,8 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
 
-//import Formulario from './components/Formulario/index.vue'
-//import Usuarios from './components/Usuarios.vue'
+import Formulario from './components/Formulario/index.vue'
+import Http from './components/Http.vue'
 
 
 const routes = [
@@ -10,7 +10,7 @@ const routes = [
   { path: '/', redirect: '/formulario' },
     //rutas activas de los componentes
   { path: '/formulario', component: Formulario },
-  { path: '/usuarios', component: Usuarios },
+  { path: '/http', component: Http },
   //rutas no definidas o existentes
   { path: '/:pathMatch(.*)*', redirect: '/formulario' }
 ]
