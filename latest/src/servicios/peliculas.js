@@ -18,6 +18,16 @@ class ServicioPeliculas {
         }
     }
 
+    getById = async id => {
+        try {
+            const { data: pelicula } = await axios.get(`${this.#url}/${id}`)
+            return pelicula
+        }
+        catch(error) {
+            console.error('Error productos GET BY ID', error.message)
+        }
+    }
+
     post = async pelicula=> {
         try {
             const { data:peliculaGuardada } = await axios.post(this.#url, pelicula)

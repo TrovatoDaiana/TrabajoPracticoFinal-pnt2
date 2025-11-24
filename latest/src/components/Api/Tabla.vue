@@ -19,7 +19,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="(pelicula, index) in peliculas" :key="index">
+                    <tr v-for="(pelicula, index) in peliculas" :key="pelicula.id || index">
                         <td>{{ pelicula.id }}</td>
                         <td>{{ pelicula.titulo }}</td>
                         <td>{{ pelicula.anioDeEstreno }}</td>
@@ -29,6 +29,7 @@
                         <td>{{ pelicula.actores }}</td>
                         <td>{{ pelicula.descripcionDeLaPelicula }}</td>
                         <td>
+  
                             <button
                                 :class="['btn', { 'btn-warning': !ponerCancelarEdicion(pelicula.id), 'btn-primary': ponerCancelarEdicion(pelicula.id) }, 'my-1', 'me-2']"
                                 @click="editar(pelicula.id)">

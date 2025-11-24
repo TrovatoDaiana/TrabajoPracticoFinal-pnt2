@@ -4,7 +4,6 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Api from './components/Api/index.vue'
 
 
-
 const routes = [
     //ruta raiz por defecto
   { path: '/', redirect: '/api' },

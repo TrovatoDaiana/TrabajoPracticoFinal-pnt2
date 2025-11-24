@@ -1,7 +1,7 @@
 <template>
     <section class="card">
         <div class="card-header">
-            <h3>Index</h3>
+            <h3>Grilla de peliculas</h3>
         </div>
 
         <div class="card-body">
