@@ -1,82 +1,13 @@
 <template>
     <section class="card">
         <div class="card-header">
-            <h3>Componente Api</h3>
+            <h3>Index</h3>
         </div>
 
         <div class="card-body">
 
-            <form @submit.prevent="enviarActualizar">
-
-                <div class="form-group">
-                    <label for="titulo">Titulo:</label>
-                    <input type="text" id="titulo" class="form-control" v-model.trim="pelicula.titulo" @input="peliculaDirty.titulo=true">
-
-                    <div v-if="peliculaDirty.titulo && !pelicula.titulo" class="alert alert-danger mt-1">
-                        Campo requerido
-                    </div>
-                </div>
-
-                 <div class="form-group">
-                    <label for="anioDeEstreno">Año de Estreno:</label>
-                    <input type="date" id="anioDeEstreno" class="form-control" v-model.date="pelicula.anioDeEstreno" @input="peliculaDirty.anioDeEstreno=true">
-
-                    <div v-if="peliculaDirty.anioDeEstreno && !pelicula.anioDeEstreno" class="alert alert-danger mt-1">
-                        Campo requerido
-                    </div>
-                </div>
-
-                 <div class="form-group">
-                    <label for="duracion">Duracion:</label>
-                    <input type="number" id="duracion" class="form-control" v-model.number="pelicula.duracion" @input="peliculaDirty.duracion=true">
-
-                    <div v-if="peliculaDirty.duracion && !pelicula.duracion" class="alert alert-danger mt-1">
-                        Campo requerido
-                    </div>
-                </div>
-
-                 <div class="form-group">
-                    <label for="genero">Genero:</label>
-                    <input type="text" id="genero" class="form-control" v-model.trim="pelicula.genero" @input="peliculaDirty.genero=true">
-
-                    <div v-if="peliculaDirty.genero && !pelicula.genero" class="alert alert-danger mt-1">
-                        Campo requerido
-                    </div>
-                </div>
-
-                 <div class="form-group">
-                    <label for="director">Director:</label>
-                    <input type="text" id="director" class="form-control" v-model.trim="pelicula.director" @input="peliculaDirty.director=true">
-
-                    <div v-if="peliculaDirty.director && !pelicula.director" class="alert alert-danger mt-1">
-                        Campo requerido
-                    </div>
-                </div>
-
-                 <div class="form-group">
-                    <label for="actores">Actores:</label>
-                    <input type="text" id="actores" class="form-control" v-model.trim="pelicula.actores" @input="peliculaDirty.actores=true">
-
-                    <div v-if="peliculaDirty.actores && !pelicula.actores" class="alert alert-danger mt-1">
-                        Campo requerido
-                    </div>
-                </div>
-
-                 <div class="form-group">
-                    <label for="descripcionDeLaPelicula">Descripcion de la Pelicula:</label>
-                    <input type="text" id="descripcionDeLaPelicula" class="form-control" v-model.trim="pelicula.descripcionDeLaPelicula" @input="peliculaDirty.descripcionDeLaPelicula=true">
-
-                    <div v-if="peliculaDirty.descripcionDeLaPelicula && !pelicula.descripcionDeLaPelicula" class="alert alert-danger mt-1">
-                        Campo requerido
-                    </div>
-                </div>
-
-                <button class="btn btn-success my-3" :disabled="algunCampoNoValido">
-                    {{idEditar? 'Actualizar' : 'Enviar'}}
-                </button>
-            </form>
-
-            <hr>
+            <Entrada :idEditar="idEditar" :peliculaEditar="pelicula" @enviarActualizar="enviarActualizar"/>
+            <hr/>
 
             <button class="btn btn-primary my-3 me-3" @click="obtener"> Obtener</button>
             <button class="btn btn-primary my-3" @click="peliculas=[]"> Borrar</button>
@@ -127,26 +58,27 @@
 </template>
 
 <script>
-import ServicioPeliculas from '../servicios/peliculas';
+import ServicioPeliculas from '../../servicios/peliculas';
+import Entrada from './Entrada.vue';
 export default {
-	name: 'Componente Api',
+	name: 'Index-Api',
 	props: {
-		// ejemplo: value: { type: [String, Number], default: '' }
+		
 	},
 	data() {
 	return {
         servicioPeliculas: new ServicioPeliculas(),
-        pelicula: this.iniForm(),
-        peliculaDirty: this.iniForm(),
         peliculas: [],
         idEditar:null,
+        pelicula: this.iniForm(),
+        peliculaDirty: this.iniForm(),
     };
 	},
 	watch: {
         // observadores de propiedades o datos
     },
 	components: {
-		// subcomponentes
+        Entrada,
 	},
 	computed: {
         algunCampoNoValido(){
@@ -180,17 +112,16 @@ export default {
            this.peliculas = peliculas;
         },
 
-        async enviarActualizar(){
-            const pelicula = { ...this.pelicula }; 
-            console.log(pelicula);
+        async enviarActualizar(pelicula){
+            // pelicula viene desde el hijo via $emit
             //esto es lo que haria el update (put)
             if(this.idEditar){
                 //actualizo el recurso remoto
-                const peliculaActualizada = await this.servicioPeliculas.put(this.idEditar, this.pelicula);
+                const peliculaActualizada = await this.servicioPeliculas.put(this.idEditar, pelicula);
 
                 //actualizo de la lista localmente
                 const index = this.peliculas.findIndex(p => p.id == peliculaActualizada.id);
-                this.peliculas.splice(index, 1, peliculaActualizada);
+                if(index !== -1) this.peliculas.splice(index, 1, peliculaActualizada);
 
                 this.idEditar=null;
             }
@@ -202,8 +133,10 @@ export default {
                 this.peliculas.push(peliculaGuardada);
 
             }
-         this.pelicula = this.iniForm();
-         this.peliculaDirty = this.iniForm();
+
+            // limpiar formulario local y del hijo
+            this.pelicula = this.iniForm();
+            this.peliculaDirty = this.iniForm();
           
         },
 

@@ -3,7 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 import Formulario from './components/Formulario/index.vue'
 import Http from './components/Http.vue'
-import Api from './components/Api.vue'
+import Api from './components/Api/index.vue'
 import Estado from './components/Estado/index.vue'
 
 
