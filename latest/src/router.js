@@ -1,22 +1,17 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
-
-import Formulario from './components/Formulario/index.vue'
-import Http from './components/Http.vue'
+//import BindingCA from './components/BindingCA.vue'
 import Api from './components/Api/index.vue'
-import Estado from './components/Estado/index.vue'
+
 
 
 const routes = [
     //ruta raiz por defecto
-  { path: '/', redirect: '/formulario' },
+  { path: '/', redirect: '/api' },
     //rutas activas de los componentes
-  { path: '/formulario', component: Formulario },
-  { path: '/http', component: Http },
   { path: '/api', component: Api },
-  { path: '/estado', component: Estado },
   //rutas no definidas o existentes
-  { path: '/:pathMatch(.*)*', redirect: '/formulario' }
+  { path: '/:pathMatch(.*)*', redirect: '/api' }
 ]
 
 const router = createRouter({

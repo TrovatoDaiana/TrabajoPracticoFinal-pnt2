@@ -6,53 +6,11 @@
 
         <div class="card-body">
 
-            <Entrada :idEditar="idEditar" :peliculaEditar="pelicula" @enviarActualizar="enviarActualizar"/>
+            <Entrada :idEditar="idEditar" :peliculaIni="peliculaIni" @enviarActualizar="enviarActualizar"/>
             <hr/>
 
-            <button class="btn btn-primary my-3 me-3" @click="obtener"> Obtener</button>
-            <button class="btn btn-primary my-3" @click="peliculas=[]"> Borrar</button>
+            <Tabla :peliculas="peliculas" :idEditar="idEditar" @editar="editar" @borrar="borrar" @obtener="obtener" @borrarAll="peliculas=[]"/>
 
-             <div v-if="peliculas.length">
-                <div class="table-responsive">
-                    <table class="table table-dark">
-                        <thead>
-                            <tr>
-                                <th>id</th>
-                                <th>titulo</th>
-                                <th>año de estreno</th>
-                                <th>duracion</th>
-                                <th>genero</th>
-                                <th>director</th>
-                                <th>actores</th>
-                                <th>descripcion de la pelicula</th>
-                                <th>acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="(pelicula,index) in peliculas" :key="index">
-                                <td>{{ pelicula.id }}</td>
-                                <td>{{ pelicula.titulo }}</td>
-                                <td>{{ pelicula.anioDeEstreno }}</td>
-                                <td>{{ pelicula.duracion }}</td>
-                                <td>{{ pelicula.genero }}</td>
-                                <td>{{ pelicula.director }}</td>
-                                <td>{{ pelicula.actores }}</td>
-                                <td>{{ pelicula.descripcionDeLaPelicula }}</td>
-                                <td>
-                                    <button :class="['btn', {'btn-warning': !ponerCancelarEdicion(pelicula.id), 'btn-primary': ponerCancelarEdicion(pelicula.id)}, 'my-1', 'me-2']" @click="editar(pelicula.id)">
-                                        {{ ponerCancelarEdicion(pelicula.id)? 'Cancelar' : 'Editar' }}
-                                    </button>
-
-                                    <button class="btn btn-danger my-1 me-2"@click="borrar(pelicula.id)">
-                                        Borrar
-                                    </button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div v-else class="alert alert-info">Pedir las peliculas a traves del boton.</div>
         </div>
     </section>
 </template>
@@ -60,6 +18,7 @@
 <script>
 import ServicioPeliculas from '../../servicios/peliculas';
 import Entrada from './Entrada.vue';
+import Tabla from './Tabla.vue';
 export default {
 	name: 'Index-Api',
 	props: {
@@ -70,8 +29,7 @@ export default {
         servicioPeliculas: new ServicioPeliculas(),
         peliculas: [],
         idEditar:null,
-        pelicula: this.iniForm(),
-        peliculaDirty: this.iniForm(),
+        peliculaIni: {},
     };
 	},
 	watch: {
@@ -79,20 +37,9 @@ export default {
     },
 	components: {
         Entrada,
+        Tabla
 	},
-	computed: {
-        algunCampoNoValido(){
-            return Object.entries(this.pelicula)
-                .filter(([key, val]) => {
-                    if (key === 'id') return false;
-                    if (val === null) return true;
-                    if (typeof val === 'string' && val.trim() === '') return true;
-                    if (typeof val === 'number' && Number.isNaN(val)) return true;
-                    return false;
-                })
-                .length > 0;
-        }
-    },
+    
 	methods: {
         iniForm(){
             return {
@@ -108,8 +55,9 @@ export default {
         },
         
         async obtener(){
-           const peliculas = await this.servicioPeliculas.getAll()
-           this.peliculas = peliculas;
+              const peliculas = await this.servicioPeliculas.getAll()
+              console.log('Servicio getAll devuelve:', peliculas)
+              this.peliculas = peliculas || [];
         },
 
         async enviarActualizar(pelicula){
@@ -118,11 +66,19 @@ export default {
             if(this.idEditar){
                 //actualizo el recurso remoto
                 const peliculaActualizada = await this.servicioPeliculas.put(this.idEditar, pelicula);
-
-                //actualizo de la lista localmente
-                const index = this.peliculas.findIndex(p => p.id == peliculaActualizada.id);
-                if(index !== -1) this.peliculas.splice(index, 1, peliculaActualizada);
-
+                console.log('PUT result:', peliculaActualizada);
+                if (peliculaActualizada) {
+                    //actualizo de la lista localmente
+                    const index = this.peliculas.findIndex(p => p.id == peliculaActualizada.id);
+                    if (index !== -1) {
+                        this.peliculas.splice(index, 1, peliculaActualizada);
+                    } else {
+                        // si no estaba en la lista, añadirlo
+                        this.peliculas.push(peliculaActualizada);
+                    }
+                } else {
+                    console.error('No se recibió película actualizada del servidor')
+                }
                 this.idEditar=null;
             }
              //esto es lo que haria el create (post)
@@ -133,10 +89,10 @@ export default {
                 this.peliculas.push(peliculaGuardada);
 
             }
-
+/* 
             // limpiar formulario local y del hijo
             this.pelicula = this.iniForm();
-            this.peliculaDirty = this.iniForm();
+            this.peliculaDirty = this.iniForm(); */
           
         },
 
@@ -147,14 +103,13 @@ export default {
                 this.idEditar=id
 
                 //copiar datos de la pelicula a editar al formulario
-                const peliculaAEditar = {...this.peliculas.find(p => p.id == id)};
-                this.pelicula = peliculaAEditar
+                const pelicula = {...this.peliculas.find(p => p.id == id)};
+                this.peliculaIni = pelicula
             }
             else{
                 this.idEditar=null
                 //si toco cancelar, limpio el formulario
-                this.pelicula = this.iniForm();
-                this.peliculaDirty = this.iniForm();
+                this.peliculaIni = {}
             }
         },
         ponerCancelarEdicion(id){
@@ -187,8 +142,5 @@ export default {
     background-color: #66199d;
     color: white;
 }
-label{
-    text-transform: capitalize;
-    font-style: italic;
-}
+
 </style>

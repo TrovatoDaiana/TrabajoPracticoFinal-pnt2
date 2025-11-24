@@ -75,17 +75,25 @@ export default {
 	name: 'Entrada-Api',
     props: [
         'idEditar',
-        'peliculaEditar'
+        'peliculaIni'
     ],
 	data() {
 	return {
-        pelicula: this.peliculaEditar ? { ...this.peliculaEditar } : this.iniForm(),
-        peliculaDirty: this.iniForm(),    
+    pelicula: this.iniForm(),
+    peliculaDirty: this.iniForm(),    
     };
 	},
-	watch: {
-       
-    },
+        watch: {
+            peliculaIni(nuevo) {
+                if (nuevo && Object.keys(nuevo).length) {
+                    this.pelicula = { ...nuevo }
+                } else {
+                    this.pelicula = this.iniForm()
+                }
+                this.peliculaDirty = this.iniForm()
+            }
+
+        },
 	components: {
 		// subcomponentes
 	},
@@ -102,7 +110,7 @@ export default {
                 .length > 0;
         }
     },
-	methods: {
+    methods: {
         iniForm(){
             return {
                 id:null, 
@@ -114,11 +122,6 @@ export default {
                 actores:null, 
                 descripcionDeLaPelicula:null, 
             }
-        },
-        
-        async obtener(){
-           const peliculas = await this.servicioPeliculas.getAll()
-           this.peliculas = peliculas;
         },
 
         async enviarActualizar(){
@@ -135,10 +138,7 @@ export default {
 </script>
 
 <style scoped>
-.card-header {
-    background-color: #66199d;
-    color: white;
-}
+
 label{
     text-transform: capitalize;
     font-style: italic;
