@@ -1,0 +1,17 @@
+/* main.css — archivo mínimo recreado para evitar error de import
+   Puedes añadir tus estilos globales aquí. */
+
+html, body, #app {
+  height: 100%;
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background: #fff;
+  color: #222;
+}
+
+/* estilo base para contenedores */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1rem;
+}

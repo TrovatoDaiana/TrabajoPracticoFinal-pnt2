@@ -18,6 +18,14 @@
 					<li class="nav-item">
 						<RouterLink class="nav-link" to="/http">Http</RouterLink>
 					</li>
+
+					<li class="nav-item">
+						<RouterLink class="nav-link" to="/api">Api</RouterLink>
+					</li>
+
+					<li class="nav-item">
+						<RouterLink class="nav-link" to="/estado">Estado</RouterLink>
+					</li>
 					</ul>
 					
 				</div>
