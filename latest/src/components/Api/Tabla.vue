@@ -1,6 +1,8 @@
 <template>
-    <button class="btn btn-primary my-3 me-3" @click="$emit('obtener')"> Obtener</button>
-    <button class="btn btn-primary my-3" @click="$emit('borrarAll')"> Borrar</button>
+    <div v-if="showControls" class="mb-2">
+        <button class="btn btn-primary my-3 me-3" @click="$emit('obtener')"> Obtener</button>
+        <button class="btn btn-primary my-3" @click="$emit('borrarAll')"> Borrar</button>
+    </div>
 
     <div v-if="peliculas.length">
         <div class="table-responsive">
@@ -15,7 +17,7 @@
                         <th>director</th>
                         <th>actores</th>
                         <th>descripcion de la pelicula</th>
-                        <th>acciones</th>
+                        <th v-if="showActions">acciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -28,8 +30,8 @@
                         <td>{{ pelicula.director }}</td>
                         <td>{{ pelicula.actores }}</td>
                         <td>{{ pelicula.descripcionDeLaPelicula }}</td>
-                        <td>
-  
+                        <td v-if="showActions">
+
                             <button
                                 :class="['btn', { 'btn-warning': !ponerCancelarEdicion(pelicula.id), 'btn-primary': ponerCancelarEdicion(pelicula.id) }, 'my-1', 'me-2']"
                                 @click="editar(pelicula.id)">
@@ -52,18 +54,11 @@
 <script>
 export default {
     name: 'Tabla-Api',
-    props: ['peliculas', 'idEditar'],
-    data() {
-        return {
-
-        };
-    },
-    watch: {
-    },
-    components: {
-    },
-    computed: {
-
+    props: {
+        peliculas: { type: Array, default: () => [] },
+        idEditar: { type: [String, Number], default: null },
+        showControls: { type: Boolean, default: true },
+        showActions: { type: Boolean, default: true }
     },
     methods: {
         editar(id) {

@@ -11,7 +11,10 @@
 					<ul class="navbar-nav">
 					
 					<li class="nav-item">
-						<RouterLink class="nav-link" to="/api">Api</RouterLink>
+						<RouterLink class="nav-link" to="/api">Grilla peliculas</RouterLink>
+					</li>
+					<li class="nav-item">
+						<RouterLink class="nav-link" to="/favoritas">Favoritas</RouterLink>
 					</li>
 					
 					</ul>
