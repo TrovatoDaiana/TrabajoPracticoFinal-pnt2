@@ -12,6 +12,7 @@ Este proyecto es una aplicación web desarrollada en Vue.js que permite gestiona
 - **Favoritas:** Marca y desmarca películas como favoritas.
 - **Ranking:** Visualiza un ranking dinámico de películas ordenadas por puntuación.
 - **Grilla de Películas:** Muestra las películas en un formato de grilla visual.
+- **Explorar Películas:** Permite explorar películas de manera aleatoria.
 - **Rutas Dinámicas:** Navega entre las diferentes vistas de la aplicación.
 
 ---
@@ -28,6 +29,26 @@ Este proyecto es una aplicación web desarrollada en Vue.js que permite gestiona
   - Axios (para realizar solicitudes HTTP)
 
 ---
+
+## 🌐 Rutas de la Aplicación
+
+Las rutas están configuradas en el archivo `router.js` y permiten navegar entre las diferentes vistas de la aplicación:
+
+| **Ruta**          | **Componente**         | **Descripción**                                                                 |
+|--------------------|------------------------|---------------------------------------------------------------------------------|
+| `/`               | Redirige a `/index`    | Ruta raíz que redirige al componente principal.                                |
+| `/index`          | `Index.vue`            | Página principal para gestionar películas.                                     |
+| `/favoritas`      | `Favoritas.vue`        | Permite agregar y eliminar películas favoritas.                                |
+| `/grillaPeliculas`| `GrillaPeliculas.vue`  | Muestra las películas en un formato de grilla visual.                         |
+| `/ranking`        | `Ranking.vue`          | Muestra un ranking de películas ordenadas por puntuación.                     |
+| `/randomMovie`    | `RandomMovie.vue`      | Muestra una película aleatoria.                                               |
+| `/explorar`       | `Explorar.vue`         | Permite explorar películas de manera interactiva.                             |
+| `/:pathMatch(.*)*`| Redirige a `/index`    | Ruta para manejar páginas no encontradas (404).                               |
+
+---
+
+## 📂 Estructura del Proyecto
+
 
 ## Requisitos
 - Node.js (versión 16 o superior)
