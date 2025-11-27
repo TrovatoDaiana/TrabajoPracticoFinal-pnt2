@@ -7,21 +7,57 @@
         <div class="card-body">
             <Entrada :idEditar="idEditar" :peliculaIni="peliculaIni" @enviarActualizar="enviarActualizar" />
             <hr />
+             <div class="row g-2 mb-3">
+      <div class="col-md-4">
+        <label class="form-label">Buscar por título</label>
+        <input
+          type="text"
+          class="form-control"
+          v-model.trim="busquedaTitulo"
+          placeholder="Ej: Matrix"
+        >
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Filtrar por género</label>
+        <input
+          type="text"
+          class="form-control"
+          v-model.trim="filtroGenero"
+          placeholder="Ej: Acción, Drama..."
+        >
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Filtrar por año</label>
+        <input
+          type="text"
+          class="form-control"
+          v-model.trim="filtroAnio"
+          placeholder="Ej: 1999"
+        >
+      </div>
+    </div>
+
             <Tabla
-                :peliculas="peliculas"
+                :peliculas="peliculasFiltradas"
                 :idEditar="idEditar"
                 @editar="editar"
                 @borrar="borrar"
                 @obtener="obtener"
                 @borrarAll="peliculas=[]"
                 @actualizarPuntuacion="actualizarPuntuacion"
-            />
+                @ver-detalles="verDetalles"
+                />
             <RankingPeliculas 
                 v-if="false"
                 :peliculas="peliculas"
                 @obtener="obtener"
              /> 
             <hr />
+            <PeliculaDetalle
+                v-if="peliculaSeleccionada"
+                :pelicula="peliculaSeleccionada"
+                @cerrar="cerrarDetalles"
+/>
         </div>
     </section>
 </template>
@@ -31,6 +67,7 @@ import ServicioPeliculas from '../servicios/peliculas';
 import Entrada from '../components/Entrada.vue';
 import Tabla from '../components/Tabla.vue';
 import RankingPeliculas from '../components/Ranking.vue';
+import PeliculaDetalle from './PeliculaDetalle.vue'
 
 export default {
     name: 'Index-Api',
@@ -40,12 +77,17 @@ export default {
             peliculas: [],
             idEditar: null,
             peliculaIni: {},
+            filtroGenero: '',
+            filtroAnio: '',
+            busquedaTitulo: '',
+            peliculaSeleccionada: null
         };
     },
     components: {
         Entrada,
         Tabla,
         RankingPeliculas,
+        PeliculaDetalle,
     },
     methods: {
         iniForm() {
@@ -121,10 +163,40 @@ export default {
                 this.peliculas.splice(index, 1);
             }
         },
+        verDetalles(id) {
+      const pel = this.peliculas.find(p => p.id == id)
+      if (pel) {
+        this.peliculaSeleccionada = { ...pel }
+      }
+    },
+         cerrarDetalles() {
+      this.peliculaSeleccionada = null
+    },
+
     },
     mounted() {
         this.obtener();
     },
+
+    computed: {
+  peliculasFiltradas() {
+    return this.peliculas.filter(p => {
+      const coincideGenero = this.filtroGenero
+        ? p.genero && p.genero.toLowerCase().includes(this.filtroGenero.toLowerCase())
+        : true
+
+      const coincideAnio = this.filtroAnio
+        ? String(p.anioDeEstreno).includes(this.filtroAnio)
+        : true
+
+      const coincideTitulo = this.busquedaTitulo
+        ? p.titulo && p.titulo.toLowerCase().includes(this.busquedaTitulo.toLowerCase())
+        : true
+
+      return coincideGenero && coincideAnio && coincideTitulo
+    })
+  }
+},
 };
 </script>
 

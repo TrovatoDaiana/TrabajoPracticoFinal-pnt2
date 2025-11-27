@@ -4,7 +4,7 @@ import Favoritas from './components/Favoritas.vue'
 import Index from './components/index.vue'
 import GrillaPeliculas from './components/GrillaPeliculas.vue';
 import RankingPeliculas from './components/Ranking.vue';
-
+import RandomMovie from './components/RandomMovie.vue';
 
 
 const routes = [
@@ -16,6 +16,8 @@ const routes = [
   { path: '/favoritas', component: Favoritas },
   { path: '/grillaPeliculas', component: GrillaPeliculas },
   {path: '/ranking', component: RankingPeliculas},
+  {path: '/randomMovie', component: RandomMovie},
+
 
   //rutas no definidas o existentes
   { path: '/:pathMatch(.*)*', redirect: '/index' }

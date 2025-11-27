@@ -17,6 +17,9 @@
 					<li class="nav-item">
                         <RouterLink class="nav-link" to="/ranking">Ranking Peliculas</RouterLink>
                     </li>
+					<li class="nav-item">
+ 						<RouterLink class="nav-link" to="/randomMovie">Random Movie</RouterLink>
+					</li>
                 </ul>
             </div>
         </div>

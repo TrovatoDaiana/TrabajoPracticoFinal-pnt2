@@ -75,16 +75,35 @@
                                 />
                             </td>
                             <td v-if="showActions">
-                                <button
-                                    :class="['btn', { 'btn-warning': !ponerCancelarEdicion(pelicula.id), 'btn-primary': ponerCancelarEdicion(pelicula.id) }, 'my-1', 'me-2']"
-                                    @click="editar(pelicula.id)"
-                                >
-                                    {{ ponerCancelarEdicion(pelicula.id) ? "Cancelar" : "Editar" }}
-                                </button>
-                                <button class="btn btn-danger my-1 me-2" @click="borrar(pelicula.id)">
-                                    Borrar
-                                </button>
-                            </td>
+
+    <button
+        :class="[
+            'btn',
+            { 'btn-warning': !ponerCancelarEdicion(pelicula.id), 'btn-primary': ponerCancelarEdicion(pelicula.id) },
+            'my-1',
+            'me-2'
+        ]"
+        @click="editar(pelicula.id)"
+    >
+        {{ ponerCancelarEdicion(pelicula.id) ? "Cancelar" : "Editar" }}
+    </button>
+
+
+    <button
+        class="btn btn-info my-1 me-2"
+        @click="verDetalles(pelicula.id)"
+    >
+        Ver detalles
+    </button>
+
+    <button
+        class="btn btn-danger my-1 me-2"
+        @click="borrar(pelicula.id)"
+    >
+        Borrar
+    </button>
+
+</td>
                         </tr>
                     </tbody>
                 </table>
@@ -125,6 +144,11 @@ export default {
         async actualizarPuntuacion(id, puntuacion) {
             this.$emit("actualizarPuntuacion", { id, puntuacion });
         },
+
+        verDetalles(id) {
+        this.$emit('ver-detalles', id)
+    },
+
     },
 };
 </script>
@@ -238,4 +262,6 @@ export default {
     text-align: center;
     font-weight: bold;
 }
+
+
 </style>
