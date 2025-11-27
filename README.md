@@ -16,7 +16,7 @@ Este proyecto es una aplicación Vue.js que permite gestionar información sobre
 ## Instalación
 1. Clona este repositorio:
    ```bash
-   git clone <URL_DEL_REPOSITORIO>
+   git clone <https://github.com/TrovatoDaiana/TrabajoPracticoFinal-pnt2>
 
  2. Navega al directorio del proyecto
     cd TrabajoPracticoFinal-pnt2
