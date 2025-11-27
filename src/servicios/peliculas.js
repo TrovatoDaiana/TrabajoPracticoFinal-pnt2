@@ -5,13 +5,14 @@ class ServicioPeliculas {
 
     constructor(){
         // base URL del recurso (sin slash final para concatenar claramente)
-        this.#url = 'https://69151a9d84e8bd126af89e10.mockapi.io/api/usuarios'
+        this.#url = 'https://692874ceb35b4ffc5015bf8d.mockapi.io/api/tpfinal/peliculas'
+        // this.#url = 'https://69151a9d84e8bd126af89e10.mockapi.io/api/usuarios'
     }
 
     getAll = async () => {
         try {
             const { data : peliculas} = await axios.get(this.#url)
-            return peliculas
+            return peliculas || []
         }
         catch(error) {
             console.error('Error productos GET', error.message)
@@ -58,6 +59,16 @@ class ServicioPeliculas {
             console.error('Error productos DELETE', error.message)
         }
     }
+
+    updatePuntuacion = async (id, puntuacion) => {
+        try {
+            const { data: peliculaActualizada } = await axios.put(`${this.#url}/${id}`, { puntuacion });
+            return peliculaActualizada;
+        } catch (error) {
+            console.error('Error al actualizar la puntuación:', error.message);
+            throw error;
+        }
+    };
 }
 
 export default ServicioPeliculas

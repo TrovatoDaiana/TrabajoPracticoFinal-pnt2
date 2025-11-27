@@ -1,18 +1,24 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
-//import BindingCA from './components/BindingCA.vue'
-import Api from './components/Api/index.vue'
-import Favoritas from './components/Api/Favoritas.vue'
+import Favoritas from './components/Favoritas.vue'
+import Index from './components/index.vue'
+import GrillaPeliculas from './components/GrillaPeliculas.vue';
+import RankingPeliculas from './components/Ranking.vue';
+
 
 
 const routes = [
     //ruta raiz por defecto
-  { path: '/', redirect: '/api' },
+  { path: '/', redirect: '/index' },
+
     //rutas activas de los componentes
-  { path: '/api', component: Api },
+  { path: '/index', component: Index},
   { path: '/favoritas', component: Favoritas },
+  { path: '/grillaPeliculas', component: GrillaPeliculas },
+  {path: '/ranking', component: RankingPeliculas},
+
   //rutas no definidas o existentes
-  { path: '/:pathMatch(.*)*', redirect: '/api' }
+  { path: '/:pathMatch(.*)*', redirect: '/index' }
 ]
 
 const router = createRouter({
