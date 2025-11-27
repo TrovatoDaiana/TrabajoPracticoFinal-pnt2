@@ -1,6 +1,9 @@
 # Ignorar node_modules
 node_modules/
 
+##ignorar lock json
+package-lock.json
+
 # Ignorar logs
 npm-debug.log*
 yarn-debug.log*
