@@ -5,7 +5,7 @@ import Index from './components/index.vue'
 import GrillaPeliculas from './components/GrillaPeliculas.vue';
 import RankingPeliculas from './components/Ranking.vue';
 import RandomMovie from './components/RandomMovie.vue';
-
+import Explorar from './components/Explorar.vue';
 
 const routes = [
     //ruta raiz por defecto
@@ -17,6 +17,8 @@ const routes = [
   { path: '/grillaPeliculas', component: GrillaPeliculas },
   {path: '/ranking', component: RankingPeliculas},
   {path: '/randomMovie', component: RandomMovie},
+  {path : '/explorar', component: Explorar},
+
 
 
   //rutas no definidas o existentes

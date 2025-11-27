@@ -20,6 +20,9 @@
 					<li class="nav-item">
  						<RouterLink class="nav-link" to="/randomMovie">Random Movie</RouterLink>
 					</li>
+					<li class="nav-item">
+  						<RouterLink class="nav-link" to="/explorar">Explorar</RouterLink>
+					</li>
                 </ul>
             </div>
         </div>
